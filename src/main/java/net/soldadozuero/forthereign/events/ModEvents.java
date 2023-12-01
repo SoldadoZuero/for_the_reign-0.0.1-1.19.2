@@ -10,6 +10,10 @@ import net.soldadozuero.forthereign.commands.VipKitCommand;
 import net.soldadozuero.forthereign.commands.VipPlusKitCommand;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @Mod.EventBusSubscriber(modid = ForTheReign.MOD_ID)
 public class ModEvents {
 
