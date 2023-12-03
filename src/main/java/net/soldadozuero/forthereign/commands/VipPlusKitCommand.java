@@ -31,12 +31,12 @@ public class VipPlusKitCommand {
         );
     }
 
-    private int kitStarter(CommandSourceStack source) throws CommandSyntaxException {
+    private int kitStarter(CommandSourceStack source) {
         ServerPlayer player = (ServerPlayer) source.getEntity();
 
         assert player != null;
         if(checkCooldown(player.getUUID())) {
-            Objects.requireNonNull(player).level.playSound((Player) null, player.getX(), player.getY(), player.getZ(),
+            player.level.playSound((player), player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((
                             player.getRandom().nextFloat() - player.getRandom().nextFloat()
                     ) * 0.7F + 1.0F) * 2.0F);
@@ -49,8 +49,6 @@ public class VipPlusKitCommand {
             player.sendSystemMessage(Component.literal("Você recebeu seu Kit"), true);
 
         } else {
-            UUID playerUUID = player.getUUID();
-            long cooldownEnd = cooldowns.get(playerUUID);
             player.sendSystemMessage(Component.literal("Você ainda não pode usar este comando"), true);
         }
         return 1;

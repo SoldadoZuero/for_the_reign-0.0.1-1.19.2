@@ -5,7 +5,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import org.apache.commons.lang3.mutable.Mutable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,13 +31,13 @@ public class StarterKitCommand {
         );
     }
 
-    private int kitStarter(CommandSourceStack source) throws CommandSyntaxException {
+    private int kitStarter(CommandSourceStack source) {
         ItemStack douradinha = new ItemStack(Items.GOLDEN_SHOVEL);
         ServerPlayer player = (ServerPlayer) source.getEntity();
 
         assert player != null;
         if(checkCooldown(player.getUUID())) {
-            Objects.requireNonNull(player).level.playSound((Player) null, player.getX(), player.getY(), player.getZ(),
+            player.level.playSound((player), player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((
                             player.getRandom().nextFloat() - player.getRandom().nextFloat()
                     ) * 0.7F + 1.0F) * 2.0F);
@@ -58,8 +56,6 @@ public class StarterKitCommand {
             player.sendSystemMessage(Component.literal("Você recebeu seu Kit"), true);
 
         } else {
-            UUID playerUUID = player.getUUID();
-            long cooldownEnd = cooldowns.get(playerUUID);
             player.sendSystemMessage(Component.literal("Você ainda não pode usar este comando"), true);
         }
         return 1;

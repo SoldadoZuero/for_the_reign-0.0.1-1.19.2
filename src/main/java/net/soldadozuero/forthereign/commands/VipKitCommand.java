@@ -12,8 +12,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
@@ -33,12 +31,12 @@ public class VipKitCommand {
         );
     }
 
-    private int kitStarter(CommandSourceStack source) throws CommandSyntaxException {
+    private int kitStarter(CommandSourceStack source) {
         ServerPlayer player = (ServerPlayer) source.getEntity();
 
         assert player != null;
         if(checkCooldown(player.getUUID())) {
-            Objects.requireNonNull(player).level.playSound((Player) null, player.getX(), player.getY(), player.getZ(),
+            player.level.playSound((player), player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((
                             player.getRandom().nextFloat() - player.getRandom().nextFloat()
                     ) * 0.7F + 1.0F) * 2.0F);
@@ -52,8 +50,6 @@ public class VipKitCommand {
             player.sendSystemMessage(Component.literal("Você recebeu seu Kit"), true);
 
         } else {
-            UUID playerUUID = player.getUUID();
-            long cooldownEnd = cooldowns.get(playerUUID);
             player.sendSystemMessage(Component.literal("Você ainda não pode usar este comando"), true);
         }
         return 1;
